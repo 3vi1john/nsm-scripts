@@ -1,28 +1,9 @@
 #!/bin/bash 
-
-if [ $(pgrep "snort" | wc -l) -eq 1 ] > /dev/null
-then  
-     echo "snort is alive."
-
+!/bin/bash
+sitepoint=`ps aux | grep -v grep | egrep -c 'snort|barnyard2|bro'`
+if [ $sitepoint -lt "3" ]; then
+  /etc/start-snort.sh
+  /etc/start-bro.sh
 else
-     echo "one or more snort processes are dead, trying restart..."
-     /etc/start-snort.sh
-fi
-
-if [ $(pgrep "barnyard2" | wc -l) -eq 1 ] > /dev/null
-then  
-     echo "barnyard is alive."
-
-else
-     echo "one or more barnyard processes are dead, trying restart..."
-     /etc/start-snort.sh
-fi
-
-if [ $(pgrep "bro" | wc -l) -eq 2 ] > /dev/null
-then  
-     echo "bro is alive."
-
-else
-     echo "one or more bro processes are dead, trying restart..."
-     /etc/start-bro.sh
+  echo "Snort, barnyard2, and bro are running. I will check back in 1 min..."
 fi
