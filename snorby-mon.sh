@@ -1,13 +1,11 @@
 #!/bin/bash
+#Crontab */1 * * * * root /etc/snorby-mon.sh
 
-process='delayed_job'
-
-ps aux | grep $process | awk "{ print \$11 }" | grep $process > /dev/null
-if [ $? -eq 0 ]
-        then
-                echo "$process is alive."
-        else
-                echo "$process is dead, trying restart of $process..."
-                /etc/start-snorby.sh
+sitepoint=`ps aux | grep -v grep | egrep -c 'delayed_job'`
+if [ $sitepoint -lt "1" ]; then
+  /etc/start-snorby.sh
+else
+  echo "Snorby is running. I will check back in 1 min..."
 fi
+
 
