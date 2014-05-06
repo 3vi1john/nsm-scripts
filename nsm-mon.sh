@@ -1,9 +1,16 @@
 #!/bin/bash 
-!/bin/bash
-sitepoint=`ps aux | grep -v grep | egrep -c 'snort|barnyard2|bro'`
-if [ $sitepoint -lt "3" ]; then
+ps aux | grep "[s]nort -D"
+if [ $? -ne "0" ];
+then
   /etc/start-snort.sh
-  /etc/start-bro.sh
 else
-  echo "Snort, barnyard2, and bro are running. I will check back in 1 min..."
+echo "Snort is running. I will check back in 1 min..."
+fi
+
+ps aux | grep "[b]arnyard2 -c"
+if [ $? -ne "0" ];
+then
+  /etc/start-snort.sh
+else
+  echo "Barnyard2 is running. I will check back in 1 min..."
 fi
